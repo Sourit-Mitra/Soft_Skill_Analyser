@@ -2,13 +2,12 @@ import librosa
 import numpy as np
 import warnings
 import os
-import imageio_ffmpeg
+from src.utils import setup_ffmpeg
 
 warnings.filterwarnings("ignore")
 
-# Point ffmpeg to the bundled binary from imageio-ffmpeg (no system install needed)
-_ffmpeg_path = imageio_ffmpeg.get_ffmpeg_exe()
-os.environ["PATH"] = os.path.dirname(_ffmpeg_path) + os.pathsep + os.environ.get("PATH", "")
+# Ensure FFmpeg is available
+setup_ffmpeg()
 
 class AudioAnalyzer:
     def __init__(self, sr=16000):

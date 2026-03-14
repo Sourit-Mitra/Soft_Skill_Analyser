@@ -1,7 +1,27 @@
-venv/
-__pycache__/
-*.whl
-*.wav
-*.mp3
+# Environment variables
 .env
-.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env/
+
+# Data and Logs
+*.mp3
+*.wav
+*.ogg
+*.m4a
+audio_history/
+logs/
+temp/
+
+# IDEs
+.vscode/
+.idea/
+
+# Streamlit
+.streamlit/

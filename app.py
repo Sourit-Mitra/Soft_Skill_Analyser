@@ -1,18 +1,12 @@
 import os
 import tempfile
-import imageio_ffmpeg
-
-# ── Put Anaconda's built-in ffmpeg.exe on PATH ────────────────────────────────
-# Anaconda ships a real ffmpeg.exe at Library\bin. We simply prepend that
-# directory so whisper and librosa subprocess calls can find `ffmpeg` by name.
-_CONDA_FFMPEG_DIR = r"C:\Users\amanr\anaconda3\Library\bin"
-os.environ["PATH"] = _CONDA_FFMPEG_DIR + os.pathsep + os.environ.get("PATH", "")
-# ─────────────────────────────────────────────────────────────────────────────
-
 import streamlit as st
-import tempfile
+from src.utils import setup_ffmpeg
 from src.scoring_engine import ScoringEngine
 from src.visual_components import get_radar_chart
+
+# Initialize FFmpeg setup
+setup_ffmpeg()
 
 st.set_page_config(page_title="Soft Skills Analyzer", layout="wide")
 

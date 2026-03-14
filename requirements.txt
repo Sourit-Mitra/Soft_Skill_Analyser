@@ -2,7 +2,6 @@ streamlit
 librosa
 openai-whisper
 spacy
-plotly
 pandas
 numpy
 soundfile
@@ -10,3 +9,5 @@ imageio-ffmpeg
 langchain
 langchain-openai
 python-dotenv
+plotly
+torch

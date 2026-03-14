@@ -83,22 +83,15 @@ class TextAnalyzer:
 
         prompt_template = PromptTemplate(
             input_variables=["transcript"],
-            template="""You are an expert communication coach and speech analyst with years of experience training professionals, executives, and public speakers.
-
-            Carefully analyze the following spoken transcript and evaluate it across these dimensions:
-        - Clarity and articulation of ideas
-        - Logical structure and flow of communication
-        - Professional tone and language choice
-        - Conciseness and avoidance of redundancy
-        - Confidence and assertiveness in delivery
+            template="""You are an expert communication coach. Analyze the transcript and respond with EXACTLY 3 bullet points. No introduction, no conclusion, no extra text. Just 3 bullets.
 
         Transcript:
         {transcript}
 
-        Provide exactly 3 concise, actionable bullet points of coaching feedback. Each bullet point should:
-        - Identify a specific strength or weakness observed in the transcript
-        - Explain why it matters in a professional communication context
-        - Suggest a concrete, practical improvement the speaker can implement immediately
+        Rules:
+        - Start each bullet with •
+        - Maximum 20 words per bullet
+        - Each bullet must be one actionable improvement
 
         Feedback:"""
         )

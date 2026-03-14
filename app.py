@@ -23,24 +23,27 @@ if uploaded_file is not None:
     # Save uploaded file temporarily — preserve original extension so
     # whisper and librosa can correctly detect and decode the format
     file_extension = os.path.splitext(uploaded_file.name)[1]
-    with tempfile.NamedTemporaryFile(delete=False, suffix=file_extension) as tmp_file:
-        tmp_file.write(uploaded_file.read())
-        temp_audio_path = tmp_file.name
+    temp_audio_path = None
+    
+    try:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=file_extension) as tmp_file:
+            tmp_file.write(uploaded_file.read())
+            temp_audio_path = tmp_file.name
 
-    with st.spinner("Analyzing vocal patterns and communication style..."):
-        try:
-            engine = get_scoring_engine()
-            report = engine.generate_report(temp_audio_path)
-        except Exception as e:
-            import traceback
-            error_details = traceback.format_exc()
-            st.error(f"Error processing audio: {e}")
-            st.expander("Show internal traceback (Debug Mode)").code(error_details)
-            st.stop()
-            
-        # --- TOP ROW (CARDS) ---
-        st.markdown("### Executive Summary")
-        cols = st.columns(4)
+        with st.spinner("Analyzing vocal patterns and communication style..."):
+            try:
+                engine = get_scoring_engine()
+                report = engine.generate_report(temp_audio_path)
+            except Exception as e:
+                import traceback
+                error_details = traceback.format_exc()
+                st.error(f"Error processing audio: {e}")
+                st.expander("Show internal traceback (Debug Mode)").code(error_details)
+                st.stop()
+                
+            # --- TOP ROW (CARDS) ---
+            st.markdown("### Executive Summary")
+            cols = st.columns(4)
             
             with cols[0]:
                 with st.container(border=True):
@@ -89,7 +92,6 @@ if uploaded_file is not None:
                 fillers = ["um", "uh", "like"]
                 clean_word = word.lower().strip(".,?!")
                 if clean_word in fillers:
-                    # we still output the original word including punctuation
                     return f"<mark style='background-color:#fecaca; color:#991b1b;'>{word}</mark>"
                 return word
 
@@ -115,8 +117,8 @@ if uploaded_file is not None:
 
             st.markdown(transcript_html, unsafe_allow_html=True)
 
-        except Exception as e:
-            st.error(f"Error processing audio: {e}")
-        finally:
-            if os.path.exists(temp_audio_path):
-                os.remove(temp_audio_path)
+    except Exception as e:
+        st.error(f"General Error: {e}")
+    finally:
+        if temp_audio_path and os.path.exists(temp_audio_path):
+            os.remove(temp_audio_path)

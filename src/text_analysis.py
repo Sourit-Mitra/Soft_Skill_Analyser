@@ -83,15 +83,16 @@ class TextAnalyzer:
 
         prompt_template = PromptTemplate(
             input_variables=["transcript"],
-            template="""You are an expert communication coach. Analyze the transcript and respond with EXACTLY 3 bullet points. No introduction, no conclusion, no extra text. Just 3 bullets.
+            template="""You are an expert communication coach. Analyze the transcript and provide EXACTLY 3 actionable bullet points for improvement.
 
         Transcript:
         {transcript}
 
-        Rules:
-        - Start each bullet with •
-        - Maximum 20 words per bullet
-        - Each bullet must be one actionable improvement
+        Rules for formatting:
+        1. Start each point with the character •
+        2. Put each point on its own NEW LINE.
+        3. No intro, no conclusion, just the bullets.
+        4. Maximum 20 words per point.
 
         Feedback:"""
         )
@@ -112,7 +113,11 @@ class TextAnalyzer:
                 )
                 chain = prompt_template | llm
                 response = chain.invoke({"transcript": text})
-                return response.content
+                content = response.content.strip()
+                # Ensure each bullet point starts on a new line if the LLM missed it
+                if "•" in content:
+                    content = content.replace("•", "\n•").strip()
+                return content
             except Exception as e:
                 last_error = e
                 # Print to console for debugging but continue to the next provider

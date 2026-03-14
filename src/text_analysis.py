@@ -1,26 +1,30 @@
-import spacy
+import re
+import os
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
-import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
 class TextAnalyzer:
     def __init__(self):
-        # We assume `python -m spacy download en_core_web_sm` is run.
-        self.nlp = spacy.load("en_core_web_sm")
+        # Initialized with a simple filler word set
+        self.filler_words = {"um", "uh", "uhh", "umm", "like", "actually", "basically"}
         
     def analyze(self, text):
-        doc = self.nlp(text)
-        
-        words = [token.text.lower() for token in doc if not token.is_punct and not token.is_space]
+        # Convert to lower and find all words using regex
+        # This handles tokens similarly to basic NLP without the heavy spacy/pydantic dependencies
+        words = re.findall(r"\b\w+\b", text.lower())
         total_words = len(words)
         unique_words = len(set(words))
         
-        filler_count = sum([1 for word in words if word in {"um", "uh", "like"}])
+        # Simple filler word counting
+        filler_count = sum(1 for word in words if word in self.filler_words)
+        
+        # Add common multi-word filler phrases
         text_lower = text.lower()
         filler_count += text_lower.count("you know")
+        filler_count += text_lower.count("i mean")
         
         vocab_richness = (unique_words / total_words) if total_words > 0 else 0
         

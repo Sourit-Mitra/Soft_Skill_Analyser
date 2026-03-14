@@ -1,7 +1,6 @@
 streamlit
 librosa
 openai-whisper
-spacy
 pandas
 numpy
 soundfile

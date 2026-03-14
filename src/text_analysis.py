@@ -60,10 +60,8 @@ class TextAnalyzer:
         """Uses LLM API call for deep semantic structure and style analysis."""
         # Try to get API key from Streamlit Secrets FIRST (Cloud), then Environment (Local)
         _api_key = (
-            st.secrets.get("CEREBRAS_API_KEY") or 
-            st.secrets.get("CEREBUS_API_KEY") or 
-            os.getenv("CEREBRAS_API_KEY") or 
-            os.getenv("CEREBUS_API_KEY")
+            st.secrets.get("CEREBRAS_API_KEY") or  
+            os.getenv("CEREBRAS_API_KEY") 
         )
 
         # List of free and fast Cerebras LLM models to try sequentially (fallback mechanism)
@@ -131,6 +129,6 @@ class TextAnalyzer:
         if last_error:
             return f"Error: All available LLM models failed. Last error: {last_error}"
             
-        return "No API keys provided for Cerebras (CEREBUS_API_KEY). Skipping deep semantic analysis."
+        return "No API keys provided for Cerebras (CEREBRAS_API_KEY). Skipping deep semantic analysis."
 
 

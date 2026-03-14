@@ -1,5 +1,6 @@
 import re
 import os
+import streamlit as st
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 from dotenv import load_dotenv
@@ -57,17 +58,25 @@ class TextAnalyzer:
 
     def semantic_analysis(self, text):
         """Uses LLM API call for deep semantic structure and style analysis."""
+        # Try to get API key from Streamlit Secrets FIRST (Cloud), then Environment (Local)
+        _api_key = (
+            st.secrets.get("CEREBRAS_API_KEY") or 
+            st.secrets.get("CEREBUS_API_KEY") or 
+            os.getenv("CEREBRAS_API_KEY") or 
+            os.getenv("CEREBUS_API_KEY")
+        )
+
         # List of free and fast Cerebras LLM models to try sequentially (fallback mechanism)
         providers = [
             {
                 "name": "Cerebras Llama-3.1-8B",
-                "api_key": os.getenv("CEREBUS_API_KEY") or os.getenv("CEREBRAS_API_KEY"),
+                "api_key": _api_key,
                 "base_url": "https://api.cerebras.ai/v1",
                 "model": "llama3.1-8b"
             },
             {
                 "name": "Cerebras Llama-3.3-70B",
-                "api_key": os.getenv("CEREBUS_API_KEY") or os.getenv("CEREBRAS_API_KEY"),
+                "api_key": _api_key,
                 "base_url": "https://api.cerebras.ai/v1",
                 "model": "llama-3.3-70b"
             }

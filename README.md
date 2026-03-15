@@ -4,7 +4,7 @@ A professional audio analysis tool that evaluates vocal patterns, communication 
 
 ## 🚀 Features
 
-- **Audio Transcription**: Powered by OpenAI's Whisper (running locally).
+- **Audio Transcription**: Powered by OpenAI's Whisper ().
 - **Vocal Analysis**: Extracts pitch variation, pause counts, and active speech duration using Librosa.
 - **Semantic Feedback**: Deep analysis of communication style using Cerebras LLM (Llama 3.1 8B/70B).
 - **Interactive Dashboard**: Built with Streamlit for a premium user experience.
